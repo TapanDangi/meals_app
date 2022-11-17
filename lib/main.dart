@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import './category_meals_screen.dart';
-import './categories_screen.dart';
+
+import './screens/filters_screen.dart';
+import './screens/tabs_screen.dart';
+import './screens/meal_detail_screen.dart';
+import './screens/category_meals_screen.dart';
+import './screens/categories_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,8 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'DeliMeals',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.deepPurple,
-          accentColor: Colors.lightBlue,
+          primarySwatch: Colors.teal,
+          accentColor: Colors.deepPurple[900],
         ),
         canvasColor: const Color.fromRGBO(255, 254, 229, 1),
         fontFamily: 'RaleWay',
@@ -32,11 +36,31 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      home: const CategoriesScreen(),
+      initialRoute: '/',
+      //sets the initial route
       routes: {
-        '/category-meals': (ctx) => const CategoryMealsScreen(),
+        '/': (ctx) => const TabsScreen(),
+        // '/' is is the route to home page
+        CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
+        MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
+        FiltersScreen.routeName: (ctx) => const FiltersScreen(),
       },
       //used with Navigator.pushNamed. It takes a context and returns the page to be pushed on screen with the help of a route name
+
+      //onGenerateRoute: (settings) {
+      //  print(settings.arguments);
+      //},
+      //onGenerateRoute is used to execute a named route which is not defined in routes table.
+      //Any route not defined in routes table follow this.
+
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const CategoriesScreen(),
+        );
+      },
+      //onUnknownRoute is used as a failsafe in case no other route is followed.
+      //Typically used as a error showing page
+      //it is executed if onGenerateRoute isn't defined or doesn't return a valid navigation action
     );
   }
 }
