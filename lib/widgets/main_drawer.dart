@@ -29,17 +29,25 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            color: Theme.of(context).colorScheme.secondary,
-            padding: const EdgeInsets.all(10),
+            color: Colors.green[200],
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
             height: 120,
             width: double.infinity,
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.bottomLeft,
             child: Text(
-              'Cooking up!',
+              'Hello Tapan,\nExplore your meals',
+              softWrap: true,
               style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 30,
-                color: Theme.of(context).colorScheme.primary,
+                height: 1.25,
+                letterSpacing: 1,
+                wordSpacing: 5,
+                fontFamily: 'RobotoCondensed',
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: Colors.deepPurple[800],
               ),
             ),
           ),

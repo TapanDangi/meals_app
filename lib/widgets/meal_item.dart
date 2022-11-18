@@ -12,6 +12,7 @@ class MealItem extends StatelessWidget {
     required this.duration,
     required this.complexity,
     required this.affordability,
+    required this.removeItem,
   }) : super(key: key);
 
   final String id;
@@ -20,6 +21,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final Function removeItem;
 
   String get complexityText {
     switch (complexity) {
@@ -48,10 +50,20 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(
+    Navigator.of(ctx)
+        .pushNamed(
       MealDetailScreen.routeName,
       arguments: id,
-    );
+    )
+        .then((result) {
+      if (result != null) {
+        removeItem(result);
+      }
+    });
+    //then((result) {}) function is executed after the new screen is pushed and then popped
+    //so that pushNamed is completely done with its functionality.
+    //result is the result that might have been pushed to pop() on the next screen.
+    //result is returned null if no data is passed along in pop().
   }
 
   @override

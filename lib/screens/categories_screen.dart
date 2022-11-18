@@ -11,12 +11,12 @@ class CategoriesScreen extends StatelessWidget {
     return GridView(
       //Scaffold is not returned here because the Scaffold is already set by TabsScreen
       //so we can't use Scaffold because it can't control the entire screen
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(25),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
-        childAspectRatio: 1.5,
-        mainAxisSpacing: 30,
-        crossAxisSpacing: 25,
+        childAspectRatio: 1.4,
+        mainAxisSpacing: 40,
+        crossAxisSpacing: 30,
       ),
       children: dummyCategories.map((catData) {
         return CategoryItem(
