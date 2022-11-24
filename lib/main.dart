@@ -26,12 +26,14 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _availableMeals = dummyMeals;
+  List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
       _filters = filterData;
       _availableMeals = dummyMeals.where((meal) {
         if (_filters['gluten']! && !meal.isGlutenFree) {
+          //! after_filters[gluten] signifies a null check
           return false;
         }
         if (_filters['lactose']! && !meal.isLactoseFree) {
@@ -46,6 +48,33 @@ class _MyAppState extends State<MyApp> {
         return true;
       }).toList();
     });
+  }
+
+  void _toggleFavorites(String mealId) {
+    final existingIndex =
+        _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+    //.indexWhere checks whether a certain element is part of that list and then automatically
+    //gives the index of that element
+    //it returns -1 if the element is not part of the list
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(existingIndex);
+        //removes the element at that index we get from existingIndex property
+        //used for unfavoriting a meal
+      });
+    } else {
+      setState(() {
+        _favoriteMeals.add(dummyMeals.firstWhere((meal) => meal.id == mealId));
+        //firstWhere property returns the first element that satisfies the condition
+        //used for favoriting a meal
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((meal) => meal.id == id);
+    //this returns true if we find any element for which the given condition is saisfied.
+    //any method stops after the first element if found.
   }
 
   @override
@@ -76,11 +105,12 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       //sets the initial route
       routes: {
-        '/': (ctx) => const TabsScreen(),
+        '/': (ctx) => TabsScreen(favoriteMeals: _favoriteMeals),
         // '/' is is the route to home page
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(availableMeals: _availableMeals),
-        MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(
+            toggleFavorites: _toggleFavorites, isMealFavorite: _isMealFavorite),
         FiltersScreen.routeName: (ctx) =>
             FiltersScreen(saveFilters: _setFilters, currentFilters: _filters),
       },
